@@ -44,6 +44,20 @@ def get_patient(pat_id,db:Session =Depends(get_db)):
     patient = db.query(models.Patient).filter(models.Patient.pat_id == pat_id).first()
     return patient
 
+@app.get('/Patients/{email}',tags = ['Patients'])
+def get_patient(email,db:Session =Depends(get_db)):
+    patient = db.query(models.Patient).filter(models.Patient.email == email).first()
+    if not patient:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return patient
+
+@app.get('/patient/{password}',tags = ['Patients'])
+def get_patient(password,db:Session =Depends(get_db)):
+    patient = db.query(models.Patient).filter(models.Patient.password == password).first()
+    if not patient:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return patient
+
 
 @app.get('/patients',tags = ['Patients'])
 def get(db:Session =Depends(get_db)):
