@@ -44,3 +44,17 @@ def get_admins(db:Session=Depends(get_db)):
 def get_admin(id:int,db:Session=Depends(get_db)):
     admin = db.query(models.Admin).filter(models.Admin.admin_id==id).first()
     return admin
+
+@app.get('/admins/{email}')
+def get_admin(email,db:Session=Depends(get_db)):
+    admin = db.query(models.Admin).filter(models.Admin.email==email).first()
+    if not admin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return admin
+
+@app.get('/Admin/{password}')
+def get_admin(password,db:Session=Depends(get_db)):
+    admin = db.query(models.Admin).filter(models.Admin.password==password).first()
+    if not admin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return admin
