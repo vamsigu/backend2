@@ -41,6 +41,20 @@ def get_doctor(doc_id,db:Session =Depends(get_db)):
     doctor = db.query(models.Doctor2).filter(models.Doctor2.doc_id == doc_id).first()
     return doctor
 
+@app.get('/doctor/{email}',tags = ['Doctors'])
+def get_doctor(email,db:Session =Depends(get_db)):
+    doctor = db.query(models.Doctor2).filter(models.Doctor2.email == email).first()
+    if not doctor:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return doctor
+
+@app.get('/Doctors/{password}',tags = ['Doctors'])
+def get_doctor(password,db:Session =Depends(get_db)):
+    doctor = db.query(models.Doctor2).filter(models.Doctor2.password == password).first()
+    if not doctor:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='Invalid Credentials')
+    return doctor
+
 @app.get('/doctors',tags = ['Doctors'])
 def get(db:Session =Depends(get_db)):
     doctors = db.query(models.Doctor2).all()
